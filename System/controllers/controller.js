@@ -21,6 +21,7 @@ app.controller("myCtrl",function ($scope,$http){
         });
     }
 
+
     $scope.addRequest = function (quantity,stock) {
 
         var reqAmount = quantity;
@@ -35,16 +36,35 @@ app.controller("myCtrl",function ($scope,$http){
             status:"pending"
         };
 
+        //Regular Expression to validate numbers
+        var exp = /^[0-9]+$/;
+
         if(reqAmount != null) {
-               $http.post("http://localhost:8086/requests", newRequest).then(function (response) {
-                   alert("Request sent successfully!");
-                   refreshStocks();
-               }, function (response) {
-                   alert("Requesting Failed!")
-               });
+            if (reqAmount.match(exp)) {
+                $http.post("http://localhost:8086/requests", newRequest).then(function (response) {
+                    alert("Request sent successfully!");
+                    refreshStocks();
+                }, function (response) {
+                    alert("Requesting Failed!")
+                });
+            }else{
+                alert("Please enter a valid numeric amount!");
+                refreshStocks();
+            }
         }else{
             alert("Please enter the request quantity!");
         }
+
+        // if(reqAmount != null) {
+        //     $http.post("http://localhost:8086/requests", newRequest).then(function (response) {
+        //         alert("Request sent successfully!");
+        //         refreshStocks();
+        //     }, function (response) {
+        //         alert("Requesting Failed!")
+        //     });
+        // }else{
+        //     alert("Please enter the request quantity!");
+        // }
 
 
     };
@@ -76,8 +96,22 @@ app.controller("myCtrl",function ($scope,$http){
 
     };
 
-});
+    //View and edit requests of a particular user(Assistant pharmacist)
+    // $scope.editRequest = function (requestID) {
+    //
+    //     var editRequest = requestID;
+    //     var newAmount =
+    //
+    //     $http.put("http://localhost:8086/requests/edit/" + editRequest).then(function (response) {
+    //         alert("Request Deleted Successfully!");
+    //         refreshRequests();
+    //     }, function (response) {
+    //         alert("Request Deleting Failed !")
+    //     });
+    // }
 
+});
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.controller("chiefCtrl",function ($scope,$http){
     $scope.requests = [];
 
