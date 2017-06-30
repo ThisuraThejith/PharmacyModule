@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost/pharmacy_requests');
 
 //Database schemas for requests and stocks objects
 var requests = mongoose.model('requests',{userID: String, requestID: String, drug:String, date:String, amount:Number, department:String, status:String});
-var stocks = mongoose.model('stocks',{userID: String, stockID: String, drug:String, category:String, unit:String, totalQty:Number});
+var stocks = mongoose.model('stocks',{userID: String, stockID: String, department:String,drug:String, category:String, unit:String, totalQty:Number});
 
 //server startup
 app.listen(8086, function (error) {
