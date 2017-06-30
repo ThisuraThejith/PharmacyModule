@@ -97,6 +97,19 @@ app.get("/stocks/:userId",function (req,res) {
     });
 });
 
+//Find stocks by Drug Name
+app.get("/stocks/drug/:drugs",function (req,res) {
+    var reqId=req.params.drugs;
+    console.log("[ROUTE CALLED][GET] /stocks/" + reqId);
+    stocks.find({drug:reqId},function (error,stocks) {
+        if(error){
+            console.log("[ERROR] FETCHING SPECIFIC DRUG STOCK FROM DATABASE FAILED");
+            res.end();
+        }
+        console.log("[DB] FETCHING SPECIFIC DRUG STOCK FROM DATABASE SUCCESS");
+        res.json(stocks);
+    });
+});
 
 
 //Add new request
@@ -142,7 +155,7 @@ app.put("/requests/:requestsId",function (req,res) {
             res.end();
         }
         requests.status = req.body.status;
-        requests.save(function (error,department) {
+        requests.save(function (error,requests) {
             if(error){
                 res.status(500).end();
             }
@@ -150,4 +163,25 @@ app.put("/requests/:requestsId",function (req,res) {
         });
     });
 });
+
+
+//Edit assistant pharmacist request
+app.put("/requests/edit/:requestsId",function (req,res) {
+    var reqId = req.params.requestsId;
+    console.log("[ROUTE CALLED][PUT] /requests/edit/" + reqId);
+    requests.findOne({requestID:reqId}, function (error,requests) {
+        if(error){
+            res.status(500);
+            res.end();
+        }
+        requests.amount = req.body.amount;
+        requests.save(function (error,requests) {
+            if(error){
+                res.status(500).end();
+            }
+            res.json(requests);
+        });
+    });
+});
+
 
